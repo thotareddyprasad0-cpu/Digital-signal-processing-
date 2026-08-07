@@ -1,0 +1,49 @@
+clc;
+clear;
+close all;
+
+% EX NO: 2
+% Chebyshev Type-I IIR Low-Pass Filter
+% DATE:
+
+Wp = 0.4;
+Ws = 0.55;
+Rp = 1;
+As = 40;
+
+% Find minimum filter order
+[N, Wn] = cheb1ord(Wp, Ws, Rp, As);
+
+% Design Chebyshev Type-I Low-Pass Filter
+[b, a] = cheby1(N, Rp, Wn);
+
+% Display filter parameters
+fprintf('Filter Order = %d\n', N);
+fprintf('Cutoff Frequency = %.2f * pi rad/sample\n', Wn);
+
+% Stability Check
+if all(abs(roots(a)) < 1)
+    disp('System is STABLE');
+else
+    disp('System is UNSTABLE');
+end
+
+% Magnitude and Phase Response
+figure;
+freqz(b, a);
+title('Magnitude and Phase Response');
+
+% Impulse Response
+figure;
+impz(b, a);
+title('Impulse Response');
+
+% Group Delay
+figure;
+grpdelay(b, a);
+title('Group Delay');
+
+% Pole-Zero Plot
+figure;
+zplane(b, a);
+title('Pole-Zero Plot');
